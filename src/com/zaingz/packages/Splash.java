@@ -2,33 +2,38 @@ package com.zaingz.packages;
 
 import model.Session;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
-import com.activeandroid.util.Log;
 
-@Table(name = "Categories")
+@Table(name = "Session")
 public class Splash extends Activity {
-
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Session s1 = new Session();
-        s1.id = 1;
+       /* Session s1 = new Session();
+        s1._id = 1;
         s1.tokken = "Restaurants";
         s1.save();
-      Session s;
-      s = (Session) new Select().from(Session.class).execute().get(0);
-      Log.i("String",s.tokken);
-      
-        	
-        }
-        
-        
-        
+        Session s;*/
+         if (new Select().from(Session.class).execute().isEmpty()){
+        	 Intent i = new Intent(Splash.this ,Login.class);
+        	 startActivity(i);
+         }
+         else{
+        	//Todo
+         }
     }
+	 @Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		finish();
+	}
+	}
 
 
   
