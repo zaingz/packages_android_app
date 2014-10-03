@@ -112,12 +112,13 @@ public class SignUp extends Activity {
 					  s1.tokken = EntityUtils.toString(response.getEntity()) ;
 					  s1.save();
 					 */
-					Log.i("Signup", EntityUtils.toString(response.getEntity()) );
-					HttpGet g = new HttpGet(URL);
 					String token =  EntityUtils.toString(response.getEntity());
+				
+					HttpGet g = new HttpGet(URL);
+				
 					g.setHeader("Authorization", "Token token =" +token);
 					
-					HttpResponse response1 = c.execute(p);
+					HttpResponse response1 = c.execute(g);
 					String result = EntityUtils.toString(response1.getEntity());
 					Log.i("user",result);
 					//parse user and save it

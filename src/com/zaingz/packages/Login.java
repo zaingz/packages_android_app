@@ -97,7 +97,7 @@ public class Login extends Activity {
 					HttpGet g = new HttpGet(URl1);
 					g.setHeader("Authorization", "Token token =" + token);
 
-					HttpResponse response1 = c.execute(p);
+					HttpResponse response1 = c.execute(g);
 					Log.i("userinfo", EntityUtils.toString(response1.getEntity()));
                     //{"message":"Password/Token issue"} ya aa raha jab ka details ani chai thi
 					if (response1.getStatusLine().getStatusCode() == 200) {
