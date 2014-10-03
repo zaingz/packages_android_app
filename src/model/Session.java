@@ -20,4 +20,5 @@ public class Session extends Model {
 		this.tokken=tokken;
 		
 	}
+	
 }
