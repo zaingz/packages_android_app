@@ -151,7 +151,7 @@ public class SignUp extends Activity {
 		protected void onPostExecute(String result) {
 			//Log.i("Sexo1", result);
 			Error error = new Gson().fromJson(result, Error.class);
-			Log.i("Sexo1", error.username);
+		//	Log.i("Sexo1", error.username);
 			
 		
 			

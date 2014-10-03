@@ -91,9 +91,9 @@ public class Login extends Activity {
 				HttpResponse response = c.execute(p);
 				token = EntityUtils.toString(response.getEntity());
 				Log.i("token", token);
-
+				Log.i("login", "after getting token"+ token);
 				if (response.getStatusLine().getStatusCode() == 200) {
-
+					Log.i("login", "after getting token"+ token);
 					HttpGet g = new HttpGet(URl1);
 					g.setHeader("Authorization", "Token token =" + token);
 
