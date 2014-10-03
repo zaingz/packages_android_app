@@ -41,9 +41,19 @@ public class Login extends Activity {
 	}
 
 	public void signIn(View view) {
-
+		
+		ArrayList<EditText> errorEdits = Helper.isTextFieldEmpty(fields[0],fields[1]);
+		
+		if (errorEdits.isEmpty())
 		new Tokken().execute(fields[0].getText().toString(), fields[1]
 				.getText().toString());
+		else{
+			for (int i=0;i<errorEdits.size();i++)
+				errorEdits.get(i).setError("Field is required");
+				
+			errorEdits.get(0).requestFocus();
+			
+		}
 	}
 
 	public void signUp(View view) {

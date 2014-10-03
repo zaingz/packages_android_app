@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
 import android.content.Context;
+import android.content.pm.FeatureInfo;
 import android.widget.Toast;
 import model.User;
 import model.Error;
@@ -47,7 +50,7 @@ public class SignUp extends Activity {
 	}
 
 	public void signup1(View view) {
-	EditText et =	Helper.isTextFieldEmpty(fields);
+	/*EditText et =	Helper.isTextFieldEmpty(fields);
 	if(et != null){
 	et.setError("This field can not be empty");
 	
@@ -55,11 +58,27 @@ public class SignUp extends Activity {
 	//idhar aik issue hai agr error hai tu dobara theek kasa karing ga
 	//wahan type ni o raha zra deahko yahan
 	else{	
-		new Signup1().execute(fields[0].getText().toString(), fields[1]
-				.getText().toString(), fields[2].getText().toString(),
-				fields[3].getText().toString());
+	
 		
-	}
+	}*/
+		
+	ArrayList<EditText> errorEdits = Helper.isTextFieldEmpty(fields[0],fields[1],fields[2],fields[3]);
+		
+		if (errorEdits.isEmpty())
+			if (Helper.isValidEmail(fields[1].getText().toString()))
+			new Signup1().execute(fields[0].getText().toString(), fields[1]
+					.getText().toString(), fields[2].getText().toString(),
+					fields[3].getText().toString());
+			else
+				fields[1].setError("Email not valid");
+		else{
+			for (int i=0;i<errorEdits.size();i++)
+				errorEdits.get(i).setError("Field is required");
+				
+			errorEdits.get(0).requestFocus();
+		}
+		
+		
 	}
 	private class Signup1 extends AsyncTask<String, Void, String> {
 		String error = null;

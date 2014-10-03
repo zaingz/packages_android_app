@@ -12,5 +12,6 @@
     <string name="email">Email</string>
      <string name="sign_in">Sign In</string>
     <string name="title_activity_sign_up">SignUp</string>
+    <string name="user_name_or_email">Email or Username</string>
 
 </resources>
