@@ -73,7 +73,7 @@ public class SignUp extends Activity {
 				fields[1].setError("Email not valid");
 		else{
 			for (int i=0;i<errorEdits.size();i++)
-				errorEdits.get(i).setError("Field is required");
+				errorEdits.get(i).setError(errorEdits.get(i).getHint() +" is required");
 				
 			errorEdits.get(0).requestFocus();
 		}
@@ -89,7 +89,7 @@ public class SignUp extends Activity {
 			String URL = Helper.URL_USER;
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("user[username]", urls[0].trim()));
+			params.add(new BasicNameValuePair("user[username]", urls[0].trim().toLowerCase()));
 			params.add(new BasicNameValuePair("user[email]", urls[1].trim()));
 			params.add(new BasicNameValuePair("user[password]", urls[2].trim()));
 			params.add(new BasicNameValuePair("user[password_confirmation]",

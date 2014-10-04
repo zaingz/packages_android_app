@@ -49,7 +49,7 @@ public class Login extends Activity {
 				.getText().toString());
 		else{
 			for (int i=0;i<errorEdits.size();i++)
-				errorEdits.get(i).setError("Field is required");
+				errorEdits.get(i).setError(errorEdits.get(i).getHint() +" is required");
 				
 			errorEdits.get(0).requestFocus();
 			
@@ -76,7 +76,7 @@ public class Login extends Activity {
 						.trim()));
 			} else {
 				requestParams.add(new BasicNameValuePair("username", params[0]
-						.trim()));
+						.trim().toLowerCase()));
 			}
 
 			requestParams.add(new BasicNameValuePair("password", params[1]
