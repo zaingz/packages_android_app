@@ -116,7 +116,7 @@ public class SignUp extends Activity {
 		            Gson gson = gsonBuilder.create();
 		            User user = gson.fromJson(result,User.class );
 					Log.i("userinfo", user.username);
-					
+					user.save();
 					
 
 				} else if (response.getStatusLine().getStatusCode() == 422) {
