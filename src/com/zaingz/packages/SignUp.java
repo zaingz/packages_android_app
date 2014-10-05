@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import model.Error;
+import model.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -111,8 +112,10 @@ public class SignUp extends Activity {
 					String result = EntityUtils.toString(response1.getEntity());
 					Log.i("user",result);
 					//parse user and save it
-					//User user = new Gson().fromJson(EntityUtils.toString(response1.getEntity()), User.class);
-      // Log.i("sexo11", user.email);
+					GsonBuilder gsonBuilder = new GsonBuilder();
+		            Gson gson = gsonBuilder.create();
+		            User user = gson.fromJson(result,User.class );
+					Log.i("userinfo", user.username);
 					
 					
 
@@ -139,9 +142,8 @@ public class SignUp extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			//Log.i("Sexo1", result);
-			//Error error = new Gson().fromJson(result, Error.class);
 			
+			if(error!=null){
 			GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
 			List<Error> error = new ArrayList<Error>();
@@ -152,7 +154,7 @@ public class SignUp extends Activity {
 		
 			
 			
-
+			}
 		}
 	}
 

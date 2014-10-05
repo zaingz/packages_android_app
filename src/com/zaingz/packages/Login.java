@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Message;
 import model.User;
 
 import org.apache.http.HttpResponse;
@@ -89,6 +90,7 @@ public class Login extends Activity {
 				p.setEntity(new UrlEncodedFormEntity(requestParams, HTTP.UTF_8));
 
 				HttpResponse response = c.execute(p);
+				
 				token = EntityUtils.toString(response.getEntity());
 				Log.i("token", token);
 				Log.i("login", "after getting token"+ token);
@@ -109,7 +111,7 @@ public class Login extends Activity {
 			            Gson gson = gsonBuilder.create();
 			            User user = gson.fromJson(userInfo,User.class );
 						Log.i("userinfo", user.username);
-						
+						user.save();
 						
 					
 						
@@ -135,7 +137,12 @@ public class Login extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-
+            
+			GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            Message me = gson.fromJson(result,Message.class);
+            Log.i("error",me.message);
+			
 			/*Session s1 = new Session();
 			s1._id = 1;
 			s1.tokken = result;
