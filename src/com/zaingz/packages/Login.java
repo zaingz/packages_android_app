@@ -3,9 +3,9 @@ package com.zaingz.packages;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import model.Message;
 import model.User;
 
 import org.apache.http.HttpResponse;
@@ -21,6 +21,7 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -63,14 +64,24 @@ public class Login extends Activity {
 
 	}
 
-	private class Tokken extends AsyncTask<String, Void, String> {
+	private class Tokken extends AsyncTask<String, Void, HashMap> {
 
+		  ProgressDialog pd;
+		  protected void onPreExecute() {
+	          // NOTE: You can call UI Element here.
+	    	  pd = new ProgressDialog(Login.this);
+				pd.setMessage("Siging in...");
+				pd.show();
+	          
+	      }
+		
 		@Override
-		protected String doInBackground(String... params) {
+		protected HashMap doInBackground(String... params) {
 			String URL = Helper.URL_SESSION;
 			String URl1 = Helper.URL_USER;
+			String token;
 			List<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-			String token = null;
+			HashMap<String, String> result = new HashMap<String, String>();
 			// email method
 			if (Helper.isValidEmail(params[0])) {
 				requestParams.add(new BasicNameValuePair("email", params[0]
@@ -93,9 +104,11 @@ public class Login extends Activity {
 				
 				token = EntityUtils.toString(response.getEntity());
 				Log.i("token", token);
+				result.put("error", token);
 				Log.i("login", "after getting token"+ token);
 				if (response.getStatusLine().getStatusCode() == 200) {
 					Log.i("login", "after getting token"+ token);
+					result.put("token", token);
 					HttpGet g = new HttpGet(URl1);
 					g.setHeader("Authorization", "Token token =" + token);
 
@@ -132,13 +145,23 @@ public class Login extends Activity {
 				e.printStackTrace();
 			}
 
-			return token;
+			return result;
 		}
 
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(HashMap result) {
             
-			GsonBuilder gsonBuilder = new GsonBuilder();
+			pd.dismiss();
+			
+			if (result.containsKey("error")){
+				//its an error
+				Log.i("zain", result.toString());
+			}else{
+				
+				//its token
+			}
+			
+			/*GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
             Message me = gson.fromJson(result,Message.class);
             Log.i("error",me.message);
