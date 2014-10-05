@@ -5,17 +5,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Session;
+import model.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -28,6 +26,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Login extends Activity {
 	EditText[] fields = { null, null };
@@ -45,8 +46,7 @@ public class Login extends Activity {
 		ArrayList<EditText> errorEdits = Helper.isTextFieldEmpty(fields[0],fields[1]);
 		
 		if (errorEdits.isEmpty())
-		new Tokken().execute(fields[0].getText().toString(), fields[1]
-				.getText().toString());
+		new Tokken().execute(fields[0].getText().toString(), fields[1].getText().toString());
 		else{
 			for (int i=0;i<errorEdits.size();i++)
 				errorEdits.get(i).setError(errorEdits.get(i).getHint() +" is required");
@@ -98,11 +98,22 @@ public class Login extends Activity {
 					g.setHeader("Authorization", "Token token =" + token);
 
 					HttpResponse response1 = c.execute(g);
-					Log.i("userinfo", EntityUtils.toString(response1.getEntity()));
-                    //{"message":"Password/Token issue"} ya aa raha jab ka details ani chai thi
+					
+                    
 					if (response1.getStatusLine().getStatusCode() == 200) {
 
-						// save user in the db
+						// parse and save user in the db
+						String userInfo = EntityUtils.toString(response1.getEntity());
+						Log.i("userinfo", userInfo);
+						GsonBuilder gsonBuilder = new GsonBuilder();
+			            Gson gson = gsonBuilder.create();
+			            User user = gson.fromJson(userInfo,User.class );
+						Log.i("userinfo", user.username);
+						
+						
+					
+						
+						
 
 					}
 

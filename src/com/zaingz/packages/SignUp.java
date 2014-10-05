@@ -3,15 +3,9 @@ package com.zaingz.packages;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-
-
-
-import android.content.Context;
-import android.content.pm.FeatureInfo;
-import android.widget.Toast;
-import model.User;
 import model.Error;
 
 import org.apache.http.HttpResponse;
@@ -34,7 +28,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
-import com.zaingz.packages.R.drawable;
+import com.google.gson.GsonBuilder;
 
 public class SignUp extends Activity {
 	EditText[] fields = { null, null, null, null };
@@ -50,27 +44,22 @@ public class SignUp extends Activity {
 	}
 
 	public void signup1(View view) {
-	/*EditText et =	Helper.isTextFieldEmpty(fields);
-	if(et != null){
-	et.setError("This field can not be empty");
 	
-	}
-	//idhar aik issue hai agr error hai tu dobara theek kasa karing ga
-	//wahan type ni o raha zra deahko yahan
-	else{	
-	
-		
-	}*/
 		
 	ArrayList<EditText> errorEdits = Helper.isTextFieldEmpty(fields[0],fields[1],fields[2],fields[3]);
 		
 		if (errorEdits.isEmpty())
 			if (Helper.isValidEmail(fields[1].getText().toString()))
+				if (fields[2].getText().toString().equals(fields[3].getText().toString()))
 			new Signup1().execute(fields[0].getText().toString(), fields[1]
 					.getText().toString(), fields[2].getText().toString(),
 					fields[3].getText().toString());
-			else
+				else{
+					fields[3].setError("Password does not match");
+				}
+				else
 				fields[1].setError("Email not valid");
+			
 		else{
 			for (int i=0;i<errorEdits.size();i++)
 				errorEdits.get(i).setError(errorEdits.get(i).getHint() +" is required");
@@ -117,7 +106,7 @@ public class SignUp extends Activity {
 					HttpGet g = new HttpGet(URL);
 				
 					g.setHeader("Authorization", "Token token =" +token);
-					
+					Log.i("token in sign up", token);
 					HttpResponse response1 = c.execute(g);
 					String result = EntityUtils.toString(response1.getEntity());
 					Log.i("user",result);
@@ -151,9 +140,15 @@ public class SignUp extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			//Log.i("Sexo1", result);
-			Error error = new Gson().fromJson(result, Error.class);
-		//	Log.i("Sexo1", error.username);
+			//Error error = new Gson().fromJson(result, Error.class);
 			
+			GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+			List<Error> error = new ArrayList<Error>();
+			error = Arrays.asList(gson.fromJson(result, Error[].class));
+			//Error error = gson.fromJson(result, Error.class);
+			
+			Log.i("Sexo1", error.get(0).username);
 		
 			
 			
