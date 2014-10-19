@@ -112,10 +112,11 @@ public class SignUp extends Activity {
 					
 					  Session s1 = new Session(); 
 					  s1._id = 1; 
-					  s1.tokken = EntityUtils.toString(response.getEntity()) ;
+					  String token =  EntityUtils.toString(response.getEntity());
+					  s1.tokken =token;
 					  s1.save();
 					 
-					String token =  EntityUtils.toString(response.getEntity());
+					
 				
 					HttpGet g = new HttpGet(URL);
 				
@@ -156,12 +157,12 @@ public class SignUp extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			pd.dismiss();
-			if(error==null){
+			if(result==null){
 				Intent i = new Intent(SignUp.this ,DashBoard.class);
        	        startActivity(i);
        	        }
 			
-			if(error!=null){
+			if(result!=null){
 			GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
 			Error error = gson.fromJson(result, Error.class);

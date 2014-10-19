@@ -78,7 +78,7 @@ public class Login extends Activity {
 	      }
 		
 		@Override
-		protected HashMap doInBackground(String... params) {
+		protected HashMap<String, String> doInBackground(String... params) {
 			String URL = Helper.URL_SESSION;
 			String URl1 = Helper.URL_USER;
 			String token;
@@ -106,7 +106,7 @@ public class Login extends Activity {
 				
 				token = EntityUtils.toString(response.getEntity());
 				Log.i("token", token);
-				result.put("error", token);
+			
 				Log.i("login", "after getting token"+ token);
 				if (response.getStatusLine().getStatusCode() == 200) {
 					Log.i("login", "after getting token"+ token);
@@ -129,6 +129,8 @@ public class Login extends Activity {
 						user.save();
 					}
 
+				}else{
+					result.put("error", token);
 				}
 
 			} catch (UnsupportedEncodingException e) {
@@ -149,7 +151,7 @@ public class Login extends Activity {
 		protected void onPostExecute(HashMap result) {
             
 			pd.dismiss();
-			
+			Log.i("hash", result.toString());
 			if (result.containsKey("error")){
 				//its an error
 				String error =	(String) result.get("error");
@@ -169,6 +171,7 @@ public class Login extends Activity {
 			}
 			else
 			{
+				
 				//its token
 				String tokken =	(String) result.get("token");
 				Log.i("tokken in postexcute",tokken);
