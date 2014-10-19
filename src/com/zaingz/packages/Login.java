@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import model.Message;
+import model.Session;
 import model.User;
 
 import org.apache.http.HttpResponse;
@@ -125,11 +127,6 @@ public class Login extends Activity {
 			            User user = gson.fromJson(userInfo,User.class );
 						Log.i("userinfo", user.username);
 						user.save();
-						
-					
-						
-						
-
 					}
 
 				}
@@ -155,22 +152,35 @@ public class Login extends Activity {
 			
 			if (result.containsKey("error")){
 				//its an error
-				Log.i("zain", result.toString());
-			}else{
-				
+				String error =	(String) result.get("error");
+				GsonBuilder gsonBuilder = new GsonBuilder();
+	            Gson gson = gsonBuilder.create();
+	            Message me = gson.fromJson(error,Message.class);
+	            Log.i("error",me.message);
+	            if(me.message.equalsIgnoreCase("User doesn't exists"))
+	            {
+	            fields[0].setError(me.message);
+	            }
+	            else
+	            {
+	            fields[1].setError("Incorrect Password");	
+	            }
+	          
+			}
+			else
+			{
 				//its token
+				String tokken =	(String) result.get("token");
+				Log.i("tokken in postexcute",tokken);
+				Session s1 = new Session();
+				s1._id = 1;
+				s1.tokken = tokken;
+				s1.save();
+				Intent i = new Intent(Login.this ,DashBoard.class);
+	        	startActivity(i);
+				
 			}
 			
-			/*GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            Message me = gson.fromJson(result,Message.class);
-            Log.i("error",me.message);
-			
-			/*Session s1 = new Session();
-			s1._id = 1;
-			s1.tokken = result;
-			s1.save();*/
-
 		}
 	}
 

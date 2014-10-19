@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 @Table(name = "UserInfo")
 public class User extends Model {
 	@SerializedName("id")
-	@Column(name = "id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+	@Column(name = "_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	public  int id;
 	@Column(name = "username")
 	public String username;

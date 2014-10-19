@@ -3,10 +3,10 @@ package com.zaingz.packages;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import model.Error;
+import model.Session;
 import model.User;
 
 import org.apache.http.HttpResponse;
@@ -22,6 +22,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,9 +54,12 @@ public class SignUp extends Activity {
 		if (errorEdits.isEmpty())
 			if (Helper.isValidEmail(fields[1].getText().toString()))
 				if (fields[2].getText().toString().equals(fields[3].getText().toString()))
+				if(fields[0].getText().toString().length()>3)	
 			new Signup1().execute(fields[0].getText().toString(), fields[1]
 					.getText().toString(), fields[2].getText().toString(),
 					fields[3].getText().toString());
+				else
+					fields[0].setError("Username must be more than 3 chartacter");
 				else{
 					fields[3].setError("Password does not match");
 				}
@@ -72,6 +77,14 @@ public class SignUp extends Activity {
 	}
 	private class Signup1 extends AsyncTask<String, Void, String> {
 		String error = null;
+		 ProgressDialog pd;
+		  protected void onPreExecute() {
+	          // NOTE: You can call UI Element here.
+	    	  pd = new ProgressDialog(SignUp.this);
+				pd.setMessage("Siging in...");
+				pd.show();
+	          
+	      }
 		
 
 		@Override
@@ -96,12 +109,12 @@ public class SignUp extends Activity {
 
 				if (response.getStatusLine().getStatusCode() == 201) {
 					// save to tokken to db
-					/*
+					
 					  Session s1 = new Session(); 
 					  s1._id = 1; 
 					  s1.tokken = EntityUtils.toString(response.getEntity()) ;
 					  s1.save();
-					 */
+					 
 					String token =  EntityUtils.toString(response.getEntity());
 				
 					HttpGet g = new HttpGet(URL);
@@ -122,7 +135,7 @@ public class SignUp extends Activity {
 				} else if (response.getStatusLine().getStatusCode() == 422) {
 
 					 error = EntityUtils.toString(response.getEntity());
-					Log.i("Sexo", error);
+					//Log.i("Sexo", error);
 					return error;
 				}
 
@@ -142,19 +155,26 @@ public class SignUp extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
+			pd.dismiss();
+			if(error==null){
+				Intent i = new Intent(SignUp.this ,DashBoard.class);
+       	        startActivity(i);
+       	        }
 			
 			if(error!=null){
 			GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
-			List<Error> error = new ArrayList<Error>();
-			error = Arrays.asList(gson.fromJson(result, Error[].class));
-			//Error error = gson.fromJson(result, Error.class);
+			Error error = gson.fromJson(result, Error.class);
+			ArrayList<String> userName = error.userName;
+			ArrayList<String> email = error.email;
 			
-			Log.i("Sexo1", error.get(0).username);
-		
-			
-			
+			if(userName.size()!= 0){
+				fields[0].setError("Username"+userName.get(0));
 			}
+            if(email.size()!= 0){
+            	fields[1].setError("Email"+email.get(0));
+			}
+            }
 		}
 	}
 
