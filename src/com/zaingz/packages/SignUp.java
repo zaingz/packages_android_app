@@ -59,7 +59,7 @@ public class SignUp extends Activity {
 					.getText().toString(), fields[2].getText().toString(),
 					fields[3].getText().toString());
 				else
-					fields[0].setError("Username must be more than 3 chartacter");
+					fields[0].setError("Username must be more than 3 chartacters");
 				else{
 					fields[3].setError("Password does not match");
 				}
@@ -157,9 +157,13 @@ public class SignUp extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			pd.dismiss();
+			
 			if(result==null){
 				Intent i = new Intent(SignUp.this ,DashBoard.class);
-       	        startActivity(i);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				startActivity(i);
+       	        
+       	        
        	        }
 			
 			if(result!=null){
@@ -168,12 +172,11 @@ public class SignUp extends Activity {
 			Error error = gson.fromJson(result, Error.class);
 			ArrayList<String> userName = error.userName;
 			ArrayList<String> email = error.email;
-			
-			if(userName.size()!= 0){
-				fields[0].setError("Username"+userName.get(0));
+			if(userName!=null){
+				fields[0].setError("Username "+userName.get(0));
 			}
-            if(email.size()!= 0){
-            	fields[1].setError("Email"+email.get(0));
+            if(email!=null){
+            	fields[1].setError("Email "+email.get(0));
 			}
             }
 		}

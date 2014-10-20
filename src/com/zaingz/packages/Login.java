@@ -31,9 +31,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.activeandroid.annotation.Table;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+@Table(name = "Session")
 public class Login extends Activity {
 	EditText[] fields = { null, null };
 
@@ -179,9 +180,9 @@ public class Login extends Activity {
 				s1._id = 1;
 				s1.tokken = tokken;
 				s1.save();
-				Intent i = new Intent(Login.this ,DashBoard.class);
+			    Intent i = new Intent(Login.this ,DashBoard.class);
 	        	startActivity(i);
-				
+				Login.this.finish();
 			}
 			
 		}

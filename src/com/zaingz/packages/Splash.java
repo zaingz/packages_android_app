@@ -14,17 +14,17 @@ public class Splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-       /* Session s1 = new Session();
-        s1._id = 1;
-        s1.tokken = "Restaurants";
-        s1.save();
-        Session s;*/
+        
+       
          if (new Select().from(Session.class).execute().isEmpty()){
         	 Intent i = new Intent(Splash.this ,Login.class);
         	 startActivity(i);
          }
          else{
-        	//Todo
+        	 
+        	 Intent i = new Intent(Splash.this ,DashBoard.class);
+        	 startActivity(i);
+        	
          }
     }
 	 @Override
