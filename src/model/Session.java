@@ -3,6 +3,7 @@ package model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 
 
@@ -20,5 +21,9 @@ public class Session extends Model {
 		this.tokken=tokken;
 		
 	}
+	public static Session getRandom() {
+	    return new Select().from(Session.class).orderBy("RANDOM()").executeSingle();
+	}
+	
 	
 }
