@@ -3,6 +3,7 @@ package model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.annotations.SerializedName;
 @Table(name = "UserInfo")
 public class User extends Model {
@@ -19,6 +20,9 @@ public class User extends Model {
 	public String lat;
 	@Column(name = "lon")
 	public String lon;
+	public static User getRandom() {
+	    return new Select().from(Session.class).orderBy("RANDOM()").executeSingle();
+	}
 	
 	public User(){
 		super();
