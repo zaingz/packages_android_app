@@ -4,9 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 
 public class Fragment1 extends android.support.v4.app.Fragment {
+	 ListView lv ;
+	 FloatingActionButton fabButton;
+	 
+		
 
 	public Fragment1() {
 		// Required empty public constructor
@@ -16,7 +21,9 @@ public class Fragment1 extends android.support.v4.app.Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
+		
 		return inflater.inflate(R.layout.fragment_icon1, container, false);
+		
 	}
 
 }

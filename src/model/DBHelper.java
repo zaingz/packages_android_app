@@ -1,8 +1,5 @@
 package model;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper  {
 	 /*  public static final String DATABASE_NAME = "MyPackage.db";

@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,12 +31,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -44,18 +47,54 @@ import android.widget.TextView;
 public class DashBoard extends FragmentActivity implements TabListener {
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-   
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private ActionBar actionBar;
     private MyAdapter1 myAdapater;
     ViewPager viewPager;
+    ListView lv;
+    FloatingActionButton fabButton;
+    private int mLastFirstVisibleItem;
+    private boolean mIsScrollingUp;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dash_board);
-		
+		 fabButton = new FloatingActionButton.Builder(this) 
+	    .withDrawable(getResources().getDrawable(R.drawable.ic_drawer)) 
+	    .withButtonColor(Color.WHITE) 
+	    .withGravity(Gravity.BOTTOM | Gravity.RIGHT) 
+	    .withMargins(0, 0, 16, 16) 
+	    .create();
+		  lv = (ListView) findViewById(R.id.list1);
+		  lv.setOnScrollListener(new OnScrollListener(){
+			    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			        // TODO Auto-generated method stub
+			      }
+			      public void onScrollStateChanged(AbsListView view, int scrollState) {
+			    	  lv=getListview();
+			    	  // check here whats the issue
+			        if(scrollState == 0) 
+			        Log.i("a", "scrolling stopped...");
+
+
+			          if (view.getId() == lv.getId()) {
+			          final int currentFirstVisibleItem = lv.getFirstVisiblePosition();
+			           if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+			              mIsScrollingUp = false;
+			              Log.i("a", "scrolling down...");
+			          } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
+			              mIsScrollingUp = true;
+			              Log.i("a", "scrolling up...");
+			          }
+
+			          mLastFirstVisibleItem = currentFirstVisibleItem;
+			      } 
+			      }
+			    });
+		 
 		viewPager= (ViewPager) findViewById(R.id.viewpager);
 		viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -71,11 +110,13 @@ public class DashBoard extends FragmentActivity implements TabListener {
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 				// TODO Auto-generated method stub
 				
+				
 			}
 			
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 				// TODO Auto-generated method stub
+				
 				
 			}
 		});
@@ -121,11 +162,13 @@ public class DashBoard extends FragmentActivity implements TabListener {
 	                ) {
 	            public void onDrawerClosed(View view) {
 	                getActionBar().setTitle(mTitle);
+	                fabButton.showFloatingActionButton();
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 
 	            public void onDrawerOpened(View drawerView) {
 	                getActionBar().setTitle(mDrawerTitle);
+	                fabButton.hideFloatingActionButton();
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 	        };
@@ -265,6 +308,7 @@ class MyAdapter extends FragmentPagerAdapter{
 	
 }
 class MyAdapter1 extends BaseAdapter{
+	
 	private Context context;
 	User user = User.getRandom();
 	String userName = user.username; 

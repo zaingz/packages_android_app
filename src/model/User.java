@@ -21,7 +21,7 @@ public class User extends Model {
 	@Column(name = "lon")
 	public String lon;
 	public static User getRandom() {
-	    return new Select().from(Session.class).orderBy("RANDOM()").executeSingle();
+	    return new Select().from(User.class).orderBy("RANDOM()").executeSingle();
 	}
 	
 	public User(){
