@@ -41,6 +41,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -53,47 +54,17 @@ public class DashBoard extends FragmentActivity implements TabListener {
     private ActionBar actionBar;
     private MyAdapter1 myAdapater;
     ViewPager viewPager;
-    ListView lv;
-    FloatingActionButton fabButton;
-    private int mLastFirstVisibleItem;
-    private boolean mIsScrollingUp;
+    
+    
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dash_board);
-		 fabButton = new FloatingActionButton.Builder(this) 
-	    .withDrawable(getResources().getDrawable(R.drawable.ic_drawer)) 
-	    .withButtonColor(Color.WHITE) 
-	    .withGravity(Gravity.BOTTOM | Gravity.RIGHT) 
-	    .withMargins(0, 0, 16, 16) 
-	    .create();
-		  lv = (ListView) findViewById(R.id.list1);
-		  lv.setOnScrollListener(new OnScrollListener(){
-			    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			        // TODO Auto-generated method stub
-			      }
-			      public void onScrollStateChanged(AbsListView view, int scrollState) {
-			    	  lv=getListview();
-			    	  // check here whats the issue
-			        if(scrollState == 0) 
-			        Log.i("a", "scrolling stopped...");
-
-
-			          if (view.getId() == lv.getId()) {
-			          final int currentFirstVisibleItem = lv.getFirstVisiblePosition();
-			           if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-			              mIsScrollingUp = false;
-			              Log.i("a", "scrolling down...");
-			          } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-			              mIsScrollingUp = true;
-			              Log.i("a", "scrolling up...");
-			          }
-
-			          mLastFirstVisibleItem = currentFirstVisibleItem;
-			      } 
-			      }
-			    });
+		
+		 
+		
+		  
 		 
 		viewPager= (ViewPager) findViewById(R.id.viewpager);
 		viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
@@ -162,13 +133,13 @@ public class DashBoard extends FragmentActivity implements TabListener {
 	                ) {
 	            public void onDrawerClosed(View view) {
 	                getActionBar().setTitle(mTitle);
-	                fabButton.showFloatingActionButton();
+	                //fabButton.showFloatingActionButton();
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 
 	            public void onDrawerOpened(View drawerView) {
 	                getActionBar().setTitle(mDrawerTitle);
-	                fabButton.hideFloatingActionButton();
+	                //fabButton.hideFloatingActionButton();
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 	        };
