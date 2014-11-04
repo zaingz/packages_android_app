@@ -54,6 +54,7 @@ public class DashBoard extends FragmentActivity implements TabListener {
     private ActionBar actionBar;
     private MyAdapter1 myAdapater;
     ViewPager viewPager;
+    int tabPosition;
     
     
     
@@ -64,7 +65,7 @@ public class DashBoard extends FragmentActivity implements TabListener {
 		
 		 
 		
-		  
+		startService(new Intent(DashBoard.this,GetLocation.class));  
 		 
 		viewPager= (ViewPager) findViewById(R.id.viewpager);
 		viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
@@ -74,20 +75,33 @@ public class DashBoard extends FragmentActivity implements TabListener {
 			public void onPageSelected(int arg0) {
 				// TODO Auto-generated method stub
 				actionBar.setSelectedNavigationItem(arg0);
+				Log.i("page number on page selected", "page"+arg0);
+				if(arg0==1){
+					Fragment1.fabButton.hideFloatingActionButton();
+				}
+				if(arg0==2){
+					Fragment1.fabButton.hideFloatingActionButton();
+				}
 				
 			}
 			
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 				// TODO Auto-generated method stub
-				
+				/*Log.i("page number", "page"+arg0);
+				if(arg0==1){
+					Fragment1.fabButton.hideFloatingActionButton();
+				}
+				if(arg0==2){
+					Fragment1.fabButton.hideFloatingActionButton();
+				}
+				*/
 				
 			}
 			
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 				// TODO Auto-generated method stub
-				
 				
 			}
 		});
@@ -104,9 +118,10 @@ public class DashBoard extends FragmentActivity implements TabListener {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.mycolor)));
 
+		actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.mycolor)));
 		
 		ActionBar.Tab tab1 = actionBar.newTab();
-		actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.mycolor)));
+		
 		
 		tab1.setText("Icon 1");
 		tab1.setTabListener(this);
@@ -132,14 +147,18 @@ public class DashBoard extends FragmentActivity implements TabListener {
 	                R.string.drawer_close 
 	                ) {
 	            public void onDrawerClosed(View view) {
-	                getActionBar().setTitle(mTitle);
-	                //fabButton.showFloatingActionButton();
+	                
+	            	getActionBar().setTitle(mTitle);
+	            	Log.i("tab", "tabposition in drawer"+tabPosition);
+	                if(tabPosition==0){
+	                Fragment1.fabButton.showFloatingActionButton();}
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 
 	            public void onDrawerOpened(View drawerView) {
 	                getActionBar().setTitle(mDrawerTitle);
-	                //fabButton.hideFloatingActionButton();
+	                
+	                Fragment1.fabButton.hideFloatingActionButton();
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 	        };
@@ -233,6 +252,17 @@ public class DashBoard extends FragmentActivity implements TabListener {
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
 		viewPager.setCurrentItem(tab.getPosition());
+		Log.i("tab position","tab number"+tab.getPosition());
+		tabPosition=tab.getPosition();
+		
+		if(tab.getPosition()==1){
+			Fragment1.fabButton.hideFloatingActionButton();
+		}
+		if(tab.getPosition()==2){
+			Fragment1.fabButton.hideFloatingActionButton();
+		}
+		
+		
 	}
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
@@ -241,7 +271,14 @@ public class DashBoard extends FragmentActivity implements TabListener {
 	}
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stubLog.i("tab position","tab number"+tab.getPosition());
+		
+		if(tab.getPosition()==1){
+			Fragment1.fabButton.hideFloatingActionButton();
+		}
+		if(tab.getPosition()==2){
+			Fragment1.fabButton.hideFloatingActionButton();
+		}
 		
 	}
 	
@@ -266,6 +303,8 @@ class MyAdapter extends FragmentPagerAdapter{
 			break;
 		case 2:
 			fragment = new Fragments3();
+			break;
+		
 		}
 		return fragment;
 			
@@ -278,6 +317,7 @@ class MyAdapter extends FragmentPagerAdapter{
 	}
 	
 }
+//Adpater for list in drawer///
 class MyAdapter1 extends BaseAdapter{
 	
 	private Context context;

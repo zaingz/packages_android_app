@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 public class Fragment1 extends android.support.v4.app.Fragment {
 	 ListView lv ;
-	 FloatingActionButton fabButton;
+	 static FloatingActionButton fabButton;
 	 
 	 
 		
@@ -31,7 +31,7 @@ public class Fragment1 extends android.support.v4.app.Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_icon1, container, false);
 		 fabButton = new FloatingActionButton.Builder(this.getActivity()) 
-		    .withDrawable(getResources().getDrawable(R.drawable.ic_drawer)) 
+		    .withDrawable(getResources().getDrawable(R.drawable.plus)) 
 		    .withButtonColor(Color.WHITE) 
 		    .withGravity(Gravity.BOTTOM | Gravity.RIGHT) 
 		    .withMargins(0, 0, 16, 16) 

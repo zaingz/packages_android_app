@@ -33,7 +33,8 @@ public final class R {
         public static final int ic_drawer=0x7f020002;
         public static final int ic_launcher=0x7f020003;
         public static final int logout=0x7f020004;
-        public static final int user=0x7f020005;
+        public static final int plus=0x7f020005;
+        public static final int user=0x7f020006;
     }
     public static final class id {
         public static final int action_settings=0x7f0a0012;
@@ -73,8 +74,11 @@ public final class R {
         public static final int splash=0x7f090003;
     }
     public static final class string {
+        public static final int GPSAlertDialogMessage=0x7f050011;
+        public static final int GPSAlertDialogTitle=0x7f050010;
         public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050000;
+        public static final int cancel=0x7f050013;
         public static final int drawer_close=0x7f05000e;
         public static final int drawer_open=0x7f05000d;
         public static final int email=0x7f050008;
@@ -82,6 +86,7 @@ public final class R {
         public static final int hello_world=0x7f050001;
         public static final int password=0x7f050006;
         public static final int password1=0x7f050007;
+        public static final int settings=0x7f050012;
         public static final int sign_in=0x7f050009;
         public static final int sign_up=0x7f050004;
         public static final int title_activity_dash_board=0x7f05000c;
