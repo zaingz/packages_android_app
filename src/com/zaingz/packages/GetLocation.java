@@ -34,46 +34,57 @@ public class GetLocation extends Service {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-      GPSTracker gpsTracker = new GPSTracker(this);
-		
-		if (gpsTracker.canGetLocation())
-		{
-			stringLatitude = String.valueOf(gpsTracker.latitude);
-			stringLongitude = String.valueOf(gpsTracker.longitude);
-			User user = User.getRandom();
-			Log.i("id",""+ user.id);
-			String URL = Helper.URL_USER+user.id;
+		  final GPSTracker gpsTracker = new GPSTracker(this);
+		Thread t = new Thread(new Runnable() {
 			
-			HttpClient c = new DefaultHttpClient();
-			HttpPatch patch = new HttpPatch(URL);
-			Session session = Session.getRandom();
-			
-			Log.i("token", session.tokken);
-			patch.setHeader("Authorization", "Token token =" + session.tokken );
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("user[lat]", stringLatitude));
-			params.add(new BasicNameValuePair("user[lat]", stringLatitude));
-			
-			try {
-				patch.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-				HttpResponse response = c.execute(patch);
-				if (response.getStatusLine().getStatusCode() == 202){
-					//user.lat=stringLatitude;
-					//user.lon=stringLongitude;
+			@Override
+			public void run() {
+				
 					
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					if (gpsTracker.canGetLocation())
+					{
+						stringLatitude = String.valueOf(gpsTracker.latitude);
+						stringLongitude = String.valueOf(gpsTracker.longitude);
+						User user = User.getRandom();
+						Log.i("id",""+ user.id);
+						String URL = Helper.URL_USER+user.id;
+					
+						HttpClient c = new DefaultHttpClient();
+						HttpPatch patch = new HttpPatch(URL);
+						Session session = Session.getRandom();
+						
+						Log.i("token", session.tokken);
+						patch.setHeader("Authorization", "Token token =" + session.tokken );
+						List<NameValuePair> params = new ArrayList<NameValuePair>();
+						params.add(new BasicNameValuePair("user[lat]", stringLatitude));
+						params.add(new BasicNameValuePair("user[lat]", stringLatitude));
+						
+						try {
+							patch.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+							HttpResponse response = c.execute(patch);
+							if (response.getStatusLine().getStatusCode() == 202){
+								//user.lat=stringLatitude;
+								//user.lon=stringLongitude;
+								
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else
+					{
+						// can't get location
+			            // GPS or Network is not enabled
+			            // Ask user to enable GPS/network in settings
+						gpsTracker.showSettingsAlert();
+					}
+				
 			}
-		}
-		else
-		{
-			// can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-			gpsTracker.showSettingsAlert();
-		}
+		});
+		
+		t.start();
+    
 	}
 	@Override
 	public void onDestroy() {
