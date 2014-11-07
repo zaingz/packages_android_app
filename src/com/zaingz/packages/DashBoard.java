@@ -2,6 +2,7 @@ package com.zaingz.packages;
 
 import java.io.IOException;
 
+import model.GPSTracker;
 import model.Session;
 import model.User;
 
@@ -15,35 +16,21 @@ import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class DashBoard extends FragmentActivity implements TabListener {
 	private DrawerLayout mDrawerLayout;
@@ -52,11 +39,11 @@ public class DashBoard extends FragmentActivity implements TabListener {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private ActionBar actionBar;
-    private MyAdapter1 myAdapater;
+    private AdapterForNavigationDrawer myAdapater;
     ViewPager viewPager;
     int tabPosition;
     
-    
+    GPSTracker gpsTracker ;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +52,16 @@ public class DashBoard extends FragmentActivity implements TabListener {
 		
 		 
 		
+		gpsTracker = new GPSTracker(this);
+		if (gpsTracker.canGetLocation()){
 		startService(new Intent(DashBoard.this,GetLocation.class));  
-		 
+		}
+		else
+		{
+			gpsTracker.showSettingsAlert();
+		}
 		viewPager= (ViewPager) findViewById(R.id.viewpager);
-		viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+		viewPager.setAdapter(new AdpterForViewPager(getSupportFragmentManager()));
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
@@ -77,10 +70,10 @@ public class DashBoard extends FragmentActivity implements TabListener {
 				actionBar.setSelectedNavigationItem(arg0);
 				Log.i("page number on page selected", "page"+arg0);
 				if(arg0==1){
-					Fragment1.fabButton.hideFloatingActionButton();
+					NearByPackages.fabButton.hideFloatingActionButton();
 				}
 				if(arg0==2){
-					Fragment1.fabButton.hideFloatingActionButton();
+					NearByPackages.fabButton.hideFloatingActionButton();
 				}
 				
 			}
@@ -110,7 +103,7 @@ public class DashBoard extends FragmentActivity implements TabListener {
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		myAdapater=new MyAdapter1(this);
+		myAdapater=new AdapterForNavigationDrawer(this);
 		mDrawerList.setAdapter(myAdapater);
 		//mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item,itemsInDrawer ));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -151,14 +144,14 @@ public class DashBoard extends FragmentActivity implements TabListener {
 	            	getActionBar().setTitle(mTitle);
 	            	Log.i("tab", "tabposition in drawer"+tabPosition);
 	                if(tabPosition==0){
-	                Fragment1.fabButton.showFloatingActionButton();}
+	                NearByPackages.fabButton.showFloatingActionButton();}
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 
 	            public void onDrawerOpened(View drawerView) {
 	                getActionBar().setTitle(mDrawerTitle);
 	                
-	                Fragment1.fabButton.hideFloatingActionButton();
+	                NearByPackages.fabButton.hideFloatingActionButton();
 	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 	            }
 	        };
@@ -201,6 +194,7 @@ public class DashBoard extends FragmentActivity implements TabListener {
         
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+    
     
     private class Logout extends AsyncTask<String, Void , String>{
     	 ProgressDialog pd;
@@ -256,10 +250,10 @@ public class DashBoard extends FragmentActivity implements TabListener {
 		tabPosition=tab.getPosition();
 		
 		if(tab.getPosition()==1){
-			Fragment1.fabButton.hideFloatingActionButton();
+			NearByPackages.fabButton.hideFloatingActionButton();
 		}
 		if(tab.getPosition()==2){
-			Fragment1.fabButton.hideFloatingActionButton();
+			NearByPackages.fabButton.hideFloatingActionButton();
 		}
 		
 		
@@ -274,95 +268,21 @@ public class DashBoard extends FragmentActivity implements TabListener {
 		// TODO Auto-generated method stubLog.i("tab position","tab number"+tab.getPosition());
 		
 		if(tab.getPosition()==1){
-			Fragment1.fabButton.hideFloatingActionButton();
+			NearByPackages.fabButton.hideFloatingActionButton();
 		}
 		if(tab.getPosition()==2){
-			Fragment1.fabButton.hideFloatingActionButton();
+			NearByPackages.fabButton.hideFloatingActionButton();
 		}
 		
 	}
 	
- 
+ @Override
+protected void onPause() {
+	// TODO Auto-generated method stub
+	super.onPause();
+	stopService(getIntent());
 }
-class MyAdapter extends FragmentPagerAdapter{
-	
-	public MyAdapter(FragmentManager fm) {
-		super(fm);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public Fragment getItem(int arg0) {
-	 Fragment fragment=null;
-		switch(arg0){
-		case 0:
-			fragment = new Fragment1();
-			break;
-		case 1:
-			fragment = new Fragment2();
-			break;
-		case 2:
-			fragment = new Fragments3();
-			break;
-		
-		}
-		return fragment;
-			
-	}
-
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return 3;
-	}
-	
 }
-//Adpater for list in drawer///
-class MyAdapter1 extends BaseAdapter{
+  
 	
-	private Context context;
-	User user = User.getRandom();
-	String userName = user.username; 
-	String[] itemsInDrawer={userName,"Home","Logout"};
-	int[] images = {R.drawable.user,R.drawable.home,R.drawable.logout};
-    MyAdapter1(Context context){
-    	this.context= context;
 	
-}
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return itemsInDrawer.length;
-	}
-
-	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return itemsInDrawer[position];
-	}
-
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return position;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		View row = null;
-		if(convertView==null){
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row=inflater.inflate(R.layout.drawer_list_item, parent, false);
-		}
-		else{
-			row=convertView;
-		}
-		TextView tittleTextView = (TextView) row.findViewById(R.id.text1);
-		ImageView imageOfTittle = (ImageView) row.findViewById(R.id.imageViewOfDrawer);
-		tittleTextView.setText(itemsInDrawer[position]);
-		imageOfTittle.setImageResource(images[position]);
-		return row;
-	}
-	
-}

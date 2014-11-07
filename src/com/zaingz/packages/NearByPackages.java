@@ -16,14 +16,14 @@ import android.widget.ListView;
 
 
 
-public class Fragment1 extends android.support.v4.app.Fragment {
+public class NearByPackages extends android.support.v4.app.Fragment {
 	 ListView lv ;
 	 static FloatingActionButton fabButton;
 	 
 	 
 		
 
-	public Fragment1() {
+	public NearByPackages() {
 		// Required empty public constructor
 	}
 
@@ -31,7 +31,7 @@ public class Fragment1 extends android.support.v4.app.Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_icon1, container, false);
+		View view = inflater.inflate(R.layout.fragment_near_by_packages, container, false);
 		 fabButton = new FloatingActionButton.Builder(this.getActivity()) 
 		    .withDrawable(getResources().getDrawable(R.drawable.plus)) 
 		    .withButtonColor(Color.WHITE) 

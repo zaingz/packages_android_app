@@ -35,16 +35,17 @@ public class GetLocation extends Service {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		  final GPSTracker gpsTracker = new GPSTracker(this);
-		Thread t = new Thread(new Runnable() {
+		  Thread t = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				
 					
-					if (gpsTracker.canGetLocation())
-					{
+					
 						stringLatitude = String.valueOf(gpsTracker.latitude);
 						stringLongitude = String.valueOf(gpsTracker.longitude);
+						Log.i("lat",""+ stringLatitude);
+						
 						User user = User.getRandom();
 						Log.i("id",""+ user.id);
 						String URL = Helper.URL_USER+user.id;
@@ -55,30 +56,27 @@ public class GetLocation extends Service {
 						
 						Log.i("token", session.tokken);
 						patch.setHeader("Authorization", "Token token =" + session.tokken );
-						List<NameValuePair> params = new ArrayList<NameValuePair>();
-						params.add(new BasicNameValuePair("user[lat]", stringLatitude));
-						params.add(new BasicNameValuePair("user[lat]", stringLatitude));
+						List<NameValuePair> params = new ArrayList<NameValuePair>(2);
+						params.add(new BasicNameValuePair("user[lat]", stringLatitude.trim()));
+						params.add(new BasicNameValuePair("user[lon]", stringLongitude.trim()));
 						
 						try {
+							
 							patch.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 							HttpResponse response = c.execute(patch);
+							Log.d("Http Response:", response.toString());
 							if (response.getStatusLine().getStatusCode() == 202){
-								//user.lat=stringLatitude;
-								//user.lon=stringLongitude;
+								Log.i("lat",""+ stringLatitude);
+								user.lat=stringLatitude;
+								user.lon=stringLongitude;
+								Log.i("lon",""+ user.lon);
 								
 							}
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
-					else
-					{
-						// can't get location
-			            // GPS or Network is not enabled
-			            // Ask user to enable GPS/network in settings
-						gpsTracker.showSettingsAlert();
-					}
+					
 				
 			}
 		});

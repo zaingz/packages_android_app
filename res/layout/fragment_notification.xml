@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zaingz.packages.Fragments3" >
+    tools:context="com.zaingz.packages.Notification" >
 
     <!-- TODO: Update blank fragment layout -->
 

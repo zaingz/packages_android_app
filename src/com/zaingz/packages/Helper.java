@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 public class Helper {
 
-	public static final String URL_USER = "http://packages-api2.herokuapp.com/users";
+	public static final String URL_USER = "http://packages-api2.herokuapp.com/users/";
 	public static final String URL_SESSION = "http://packages-api2.herokuapp.com/users/session";
 
 	protected static boolean isValidEmail(String email) {
