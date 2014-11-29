@@ -17,14 +17,14 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <color name="mycolor">#E51451</color>
-    
+
     <string name="GPSAlertDialogTitle">GPS is setting</string>
     <string name="GPSAlertDialogMessage">GPS is not enabled. Do you want to go to setting menu</string>
-    
-	<string name="settings">Settings</string>
+    <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
-    
+
     <string-array name="planets_array">
         <item>Mercury</item>
         <item>Venus</item>
@@ -43,8 +43,7 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
-   
-        
-  
+
+    <string name="title_activity_posting_user_package">Post Item</string>
 
 </resources>

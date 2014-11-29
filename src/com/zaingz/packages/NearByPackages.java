@@ -2,18 +2,21 @@ package com.zaingz.packages;
 
 
 
-import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-
 
 
 public class NearByPackages extends android.support.v4.app.Fragment {
@@ -38,6 +41,16 @@ public class NearByPackages extends android.support.v4.app.Fragment {
 		    .withGravity(Gravity.BOTTOM | Gravity.RIGHT) 
 		    .withMargins(0, 0, 16, 16) 
 		    .create();
+		 fabButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getActivity() ,PostingUserPackage.class);
+				startActivity(i);
+				
+				
+			}
+		});
 		 
 		lv=(ListView) view.findViewById(R.id.list1);
 		

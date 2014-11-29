@@ -7,10 +7,21 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-
+    <permission 
+        android:name="com.zaingz.packages.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
+      
+    <uses-permission android:name="com.zaingz.packages.permission.MAPS_RECEIVE"  />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission 
+	    android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    
+	<uses-feature 
+	    android:glEsVersion="0x00020000"
+	    android:required="true"/>
 
     <application
         android:name="com.activeandroid.app.Application"
@@ -18,7 +29,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <service android:name="GetLocation"></service>
+        <service android:name=".GetLocation" >
+        </service>
+
         <activity
             android:name=".Splash"
             android:label="@string/app_name" >
@@ -48,6 +61,14 @@
             android:name=".DashBoard"
             android:label="@string/title_activity_dash_board" >
         </activity>
+        <activity
+            android:name=".PostingUserPackage"
+            android:label="@string/title_activity_posting_user_package" >
+        </activity>
+        <meta-data 
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDAhidW2ZNJb8MB3qL7NtPFpt6ab_uAsGM"/>
+        
     </application>
 
 </manifest>
